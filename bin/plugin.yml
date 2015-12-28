@@ -1,0 +1,31 @@
+name: CheatControl
+author: Emiliano Maccaferri
+description: Controllo cheaters, rilasciato esclusivamente per MegaClasher
+version: 1.0
+main: me.emilianomaccaferri.cheatcontrol.Main
+
+commands:
+  setcontrollo:
+    permission: cc.set
+    permission-message: Comando sconosciuto.
+    description: Setta il punto di controllo.
+    
+  controllo:
+    permission: cc.control
+    permission-message: Comando sconosciuto.
+    description: Verifica un giocatore.
+    
+  legit:
+    permission: cc.legit
+    permission-message: Comando sconosciuto.
+    description: Libera un giocatore.
+    
+  hack:
+    permission: cc.hack
+    permission-message: Comando sconosciuto.
+    description: Condanna un giocatore.
+    
+  tpcontrollo:
+    permission: cc.tp
+    permission-message: Comando sconosciuto.
+    description: Teletrasportati al punto di controllo.
