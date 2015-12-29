@@ -14,6 +14,7 @@ public class Main extends JavaPlugin{
 		this.getCommand("legit").setExecutor(new Commands(this));
 		this.getCommand("hack").setExecutor(new Commands(this));
 		this.getCommand("tpcontrollo").setExecutor(new Commands(this));
+		this.getCommand("credits").setExecutor(new Commands(this));
 				
 	}
 	

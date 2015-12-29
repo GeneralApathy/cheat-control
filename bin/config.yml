@@ -2,7 +2,7 @@ cLocation:
   controlX:
   controlY:
   controlZ:
-  world: 
+  world: world #Questa stringa deve SEMPRE avere un valore!
 
 cheaters: 
 

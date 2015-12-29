@@ -20,12 +20,18 @@ public class Commands implements CommandExecutor{
 		
 	}
 	
-@SuppressWarnings("deprecation")
 public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
+	
+	if(cmd.getName().equalsIgnoreCase("credits")){
+		
+		s.sendMessage("CheatControl è stato programmato da General_Apathy\n https://emilianomaccaferri.me");
+		return true;
+		
+	}
 	
 	    if(s instanceof Player){
 	    	
-	    	Player p = (Player) s;
+	    	Player p = (Player) s;  
 	    	
 			if(cmd.getName().equalsIgnoreCase("setcontrollo")){
 				
@@ -41,7 +47,7 @@ public boolean onCommand(CommandSender s, Command cmd, String label, String[] ar
 				
 				plugin.saveConfig();
 				
-				p.sendMessage("§4[CheatControl] §6§lPunto di controllo settato correttamente!");
+				p.sendMessage("§8[§cControlli§8] §6§lPunto di controllo settato correttamente!");
 				return true;
 				
 			}
@@ -56,7 +62,7 @@ public boolean onCommand(CommandSender s, Command cmd, String label, String[] ar
 				Location controlLocation = new Location(newWorld, controlX, controlY, controlZ);
 				
 				p.teleport(controlLocation);
-				p.sendMessage("§4[CheatControl] §cTeleportato al punto di controllo");
+				p.sendMessage("§8[§cControlli§8] §cTeletrasportato al punto di controllo");
 				return true;
 				
 			}
@@ -65,7 +71,7 @@ public boolean onCommand(CommandSender s, Command cmd, String label, String[] ar
 							
 				if(args.length == 0){
 					
-					p.sendMessage("§4[CheatControl] §aUtilizzo: /controllo <nome>");
+					p.sendMessage("§8[§cControlli§8] §aUtilizzo: /controllo <nome>");
 					return false;
 					
 				}
@@ -73,9 +79,10 @@ public boolean onCommand(CommandSender s, Command cmd, String label, String[] ar
 		    	String name = args[0];
 				Player cheater = Bukkit.getPlayer(name);
 				
-				if(plugin.getConfig().getConfigurationSection("cLocation") == null || plugin.getConfig().getString("cLocation.world") == null){
+				if(plugin.getConfig().getConfigurationSection("cLocation") == null || 
+						plugin.getConfig().getString("cLocation.world") == null){
 					
-					p.sendMessage("§4[CheatControl] §cIl punto di controllo non è stato ancora creato!");
+					p.sendMessage("§8[§cControlli§8] §cIl punto di controllo non è stato ancora creato!");
 					
 					return true;
 				}
@@ -93,7 +100,8 @@ public boolean onCommand(CommandSender s, Command cmd, String label, String[] ar
 					
 					if(on.hasPermission("cc.notify")){
 						
-						on.sendMessage("§4[CheatControl] §b" + on.getDisplayName() + " sta facendo un controllo hack a " + cheater.getDisplayName());
+						on.sendMessage("§8[§cControlli§8] §e" +p.getName()+" §7sta controllando §e§l"
+								+ name);
 						
 					}
 					
@@ -102,12 +110,12 @@ public boolean onCommand(CommandSender s, Command cmd, String label, String[] ar
 				plugin.saveConfig();
 				
 				cheater.teleport(controlLocation);
-				p.sendMessage("§4[CheatControl] §bStai controllando: " + cheater.getDisplayName());
+				p.sendMessage("§8[§cControlli§8] §bStai controllando: §c§l" + cheater.getDisplayName());
 				
 				for(Player onCheat : Bukkit.getOnlinePlayers()){
 				if(!onCheat.isOnline()){
 					
-					p.sendMessage("§4[CheatControl] §bIl player definito non è online");
+					p.sendMessage("§8[§cControlli§8] §bIl player definito non è online");
 					return true;
 				}
 				}
@@ -118,7 +126,7 @@ public boolean onCommand(CommandSender s, Command cmd, String label, String[] ar
 				
 				if(args.length == 0){
 					
-					p.sendMessage("§4[CheatControl] §aUtilizzo: /legit <nome>");
+					p.sendMessage("§8[§cControlli§8] §aUtilizzo: /legit <nome>");
 					return true;
 					
 				}
@@ -127,15 +135,20 @@ public boolean onCommand(CommandSender s, Command cmd, String label, String[] ar
 				List<String> notCheaterList = (List<String>) plugin.getConfig().getStringList("cheaters");
 		    	String notCheaterName = args[0];
 				Player notCheater = Bukkit.getPlayer(notCheaterName);
-				
+				if(notCheaterList.contains(notCheaterName)){
 				notCheaterList.remove(notCheaterName);
 				plugin.getConfig().set("cheaters", notCheaterList);
-				notCheater.sendMessage("§4[CheatControl]§eSei stato liberato");
+				notCheater.sendMessage("§8[§cControlli§8] §eSei stato liberato");
 				notCheater.teleport(notCheater.getWorld().getSpawnLocation());
-				Bukkit.getServer().broadcastMessage("§4[CheatControl] §l" + notCheater.getDisplayName() + "§r§b non utilizza hacks o cheats!");
+				Bukkit.getServer().broadcastMessage("§8[§cControlli§8] §a" + notCheaterName + "§7 non usa hack.");
 				plugin.saveConfig();
 				return true;
-
+				}else{
+					
+					p.sendMessage("§8[§cControlli§8] §bL'utente specificato non è nella lista dei cheaters");
+					return true;
+					
+				}
 				
 			}
 			
@@ -143,19 +156,20 @@ public boolean onCommand(CommandSender s, Command cmd, String label, String[] ar
 				
 				if(args.length == 0){
 					
-					p.sendMessage("§4[CheatControl] §aUtilizzo: /hack <nome>");
+					p.sendMessage("§8[§cControlli§8] §aUtilizzo: /hack <nome>");
 					return true;
 					
 				}
-				
+				List<String> cheaterList = (List<String>) plugin.getConfig().getStringList("cheaters");
 				String cheaterName = args[0];
-				Player isCheater = Bukkit.getPlayer(cheaterName);
-				
-				isCheater.setBanned(true);
-				isCheater.kickPlayer("Bannato per utilizzo di hack.");
-				Bukkit.getServer().broadcastMessage("§4[CheatControl] §l" + isCheater.getDisplayName() + "§r§b è stato bannato per l'utilizzo di hacks!");
+				if(cheaterList.contains(cheaterName)){
+					Bukkit.getServer().broadcastMessage("§8[§cControlli§8] §4" + cheaterName + " §7usa hack e sta per essere bannato!");
 				return true;
-				
+				}else{
+					
+					p.sendMessage("§8[§cControlli§8] §bL'utente specificato non è nella lista dei cheaters");
+					
+				}
 			}
 	
 	    }else{

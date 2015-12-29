@@ -53,8 +53,15 @@ public class Events implements Listener {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void Move(PlayerMoveEvent em){	
+		double controlX2 = pl.getConfig().getInt("cLocation.controlX");
+		double controlY2 = pl.getConfig().getInt("cLocation.controlY");
+		double controlZ2 = pl.getConfig().getInt("cLocation.controlZ");
+		String worldName2 = pl.getConfig().getString("cLocation.world");				
+		World newWorld2 = Bukkit.getWorld(worldName2);
+		Location controlLocation2 = new Location(newWorld2, controlX2, controlY2, controlZ2);
 		Player cheater = em.getPlayer();
 		List<String> cheaterList = (List<String>) pl.getConfig().getStringList("cheaters");
     	if(cheaterList.contains(cheater.getName())){
@@ -64,13 +71,38 @@ public class Events implements Listener {
     			}
     		if (System.currentTimeMillis() - last >= cooldown * 1000) {
     			  cooldowns.put(em.getPlayer().getName(), System.currentTimeMillis());
-    			  cheater.sendMessage("§cScrivi il tuo nome di Skype per essere controllato.");
+    			  cheater.sendMessage("§8[§cControlli§8] §cSei sotto un controllo hack. Scrivi il tuo contatto skype e non leftare.");
     		
     		    	
     		return;
+    		
     		}
-    		em.setCancelled(true);
+    		
+    		
+    		
+			cheater.setWalkSpeed(0);
+			cheater.setFlySpeed(0);
+			cheater.setFlying(false);
+			cheater.setAllowFlight(false);
+			cheater.setFlySpeed(0);
+			cheater.teleport(controlLocation2);
+			if(!cheater.isOnGround()){
+				
+				cheater.teleport(controlLocation2);
+				return;
+				
+			}
     	}else{
+    		
+    		cheater.setWalkSpeed((float) 0.2);
+			cheater.setFlySpeed(1);
+			cheater.setFlySpeed(1);
+			
+			if(!cheater.isOnGround()){
+				
+				return;
+				
+			}
     		
     	 em.setCancelled(false);
     	 return;

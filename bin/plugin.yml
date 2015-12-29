@@ -29,3 +29,6 @@ commands:
     permission: cc.tp
     permission-message: Comando sconosciuto.
     description: Teletrasportati al punto di controllo.
+    
+  credits:
+    description: Crediti del plugin.
